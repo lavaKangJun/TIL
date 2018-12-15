@@ -8,12 +8,6 @@
 
 import Foundation
 
-enum MovieSorting: String {
-    case sortingReservation = "0"
-    case sortingCuration = "1"
-    case sortingOpenDay = "2"
-}
-
 func movieInfoRequest<T: Decodable>(urlString: String, value: String ,completion: @escaping (Bool, Error?, T?) -> ()) {
     guard let url: URL = URL(string: urlString + value) else {
         return

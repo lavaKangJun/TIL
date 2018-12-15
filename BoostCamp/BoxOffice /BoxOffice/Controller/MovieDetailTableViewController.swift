@@ -11,10 +11,10 @@ import UIKit
 class MovieDetailTableViewController: UITableViewController, UITextViewDelegate {
 
     
-    let cache: NSCache = NSCache<NSString, UIImage>()
-    let activityIndicatorView = UIActivityIndicatorView(style: .whiteLarge)
-    let movieDetailURL = "http://connect-boxoffice.run.goorm.io/movie?id="
-    let movieCommentURL = "http://connect-boxoffice.run.goorm.io/comments?movie_id="
+    private let cache: NSCache = NSCache<NSString, UIImage>()
+    private let activityIndicatorView = UIActivityIndicatorView(style: .whiteLarge)
+    private let movieDetailURL = "http://connect-boxoffice.run.goorm.io/movie?id="
+    private let movieCommentURL = "http://connect-boxoffice.run.goorm.io/comments?movie_id="
     var movieId: String?
     var movietitle: String?
     var movieDetail: MovieDetailResult? {

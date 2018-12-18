@@ -21,7 +21,7 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
             (dataResult, error) in
             
             if error != nil {
-                print("Register Error : \(error)")
+                print("Register Error : \(error!)")
                 return
             }
             
@@ -35,17 +35,18 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
             if let uploadData =  self.profileImageView.image?.pngData() {
                 storageRef.putData(uploadData, metadata: nil, completion: { (metadata, error) in
                     if error != nil {
-                        print(error)
+                        print(error!)
                         return
                     }
                     storageRef.downloadURL(completion: { [weak self]  (url, error) in
-                        let values = ["name": name, "email": email, "profileImageURL": "\(url!)"]
+                        guard let url = url else {
+                            return
+                        }
+                        let values = ["name": name, "email": email, "profileImageURL": "\(url)"]
                         self?.registerUserIntoDatabaseWithUID(uid: uid, values: values)
-                        print(url)
                     })
                 })
             }
-            
         }
     }
     
@@ -54,7 +55,7 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
         let userReference = ref.child("user").child(uid)
         userReference.updateChildValues(values, withCompletionBlock: { [weak self](err, ref) in
             if err != nil {
-                print("updateUserError: \(err)")
+                print("updateUserError: \(err!)")
                 return
             }
             self?.dismiss(animated: true, completion: nil)
@@ -63,34 +64,13 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
         })
     }
     
-    @objc func handleLoginRegisterChange() {
-        let title = loginRegisterSegmentedControl.titleForSegment(at: loginRegisterSegmentedControl.selectedSegmentIndex)
-        registerButton.setTitle(title, for: .normal)
-        
-        //change height of inputContainerView
-        inputContainerViewHeightAnchor?.constant = loginRegisterSegmentedControl.selectedSegmentIndex == 0 ? 100: 150
-        
-        //change height of nameTextField
-        nameTextFieldHeightAnchor?.isActive = false
-        nameTextFieldHeightAnchor = nameTextField.heightAnchor.constraint(equalTo: inputContainerView.heightAnchor, multiplier: loginRegisterSegmentedControl.selectedSegmentIndex == 0 ? 0 : 1/3)
-        nameTextFieldHeightAnchor?.isActive = true
-        
-        emailTextFieldHeightAnchor?.isActive = false
-        emailTextFieldHeightAnchor = emailTextField.heightAnchor.constraint(equalTo: inputContainerView.heightAnchor, multiplier: loginRegisterSegmentedControl.selectedSegmentIndex == 0 ? 1/2 : 1/3)
-        emailTextFieldHeightAnchor?.isActive = true
-        
-        passwordTextFieldHeightAnchor?.isActive = false
-        passwordTextFieldHeightAnchor = passwordTextField.heightAnchor.constraint(equalTo: inputContainerView.heightAnchor, multiplier: loginRegisterSegmentedControl.selectedSegmentIndex == 0 ? 1/2 : 1/3)
-        passwordTextFieldHeightAnchor?.isActive = true
-    }
-    
     @objc func handleSelectProfileImageView() {
         let picker = UIImagePickerController()
         
         picker.delegate = self
         picker.allowsEditing = true
         
-         present(picker, animated: true, completion: nil)
+        present(picker, animated: true, completion: nil)
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {

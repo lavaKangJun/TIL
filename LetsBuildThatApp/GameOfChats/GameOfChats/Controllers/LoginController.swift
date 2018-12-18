@@ -138,6 +138,27 @@ class LoginController: UIViewController {
         setupLoginRegisterSegmentController()
     }
     
+    @objc func handleLoginRegisterChange() {
+        let title = loginRegisterSegmentedControl.titleForSegment(at: loginRegisterSegmentedControl.selectedSegmentIndex)
+        registerButton.setTitle(title, for: .normal)
+        
+        //change height of inputContainerView
+        inputContainerViewHeightAnchor?.constant = loginRegisterSegmentedControl.selectedSegmentIndex == 0 ? 100: 150
+        
+        //change height of nameTextField
+        nameTextFieldHeightAnchor?.isActive = false
+        nameTextFieldHeightAnchor = nameTextField.heightAnchor.constraint(equalTo: inputContainerView.heightAnchor, multiplier: loginRegisterSegmentedControl.selectedSegmentIndex == 0 ? 0 : 1/3)
+        nameTextFieldHeightAnchor?.isActive = true
+        
+        emailTextFieldHeightAnchor?.isActive = false
+        emailTextFieldHeightAnchor = emailTextField.heightAnchor.constraint(equalTo: inputContainerView.heightAnchor, multiplier: loginRegisterSegmentedControl.selectedSegmentIndex == 0 ? 1/2 : 1/3)
+        emailTextFieldHeightAnchor?.isActive = true
+        
+        passwordTextFieldHeightAnchor?.isActive = false
+        passwordTextFieldHeightAnchor = passwordTextField.heightAnchor.constraint(equalTo: inputContainerView.heightAnchor, multiplier: loginRegisterSegmentedControl.selectedSegmentIndex == 0 ? 1/2 : 1/3)
+        passwordTextFieldHeightAnchor?.isActive = true
+    }
+    
     func setupLoginRegisterSegmentController() {
         NSLayoutConstraint.activate([
              loginRegisterSegmentedControl.centerXAnchor.constraint(equalTo: view.centerXAnchor),

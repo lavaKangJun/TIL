@@ -52,8 +52,26 @@ class NewMessageController: UITableViewController {
         let user = users[indexPath.row]
         cell.textLabel?.text = user.name
         cell.detailTextLabel?.text = user.email
-        return cell
         
+        if let profileImageURL = user.profileImage {
+            if let url = URL(string: profileImageURL) {
+                let dataTask = URLSession.init(configuration: .default).dataTask(with: url) { (data, response, error) in
+               
+                    if error != nil {
+                        print(error!)
+                        return
+                    }
+                    DispatchQueue.main.async {
+                        cell.imageView?.image = UIImage(data: data!)
+                    }
+                }
+                dataTask.resume()
+            } else {
+                DispatchQueue.main.async {
+                    cell.imageView?.image = #imageLiteral(resourceName: "ic_user_loading")
+                }
+            }
+        }
+        return cell
     }
-
 }

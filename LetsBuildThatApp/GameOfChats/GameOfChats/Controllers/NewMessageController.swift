@@ -13,12 +13,19 @@ class NewMessageController: UITableViewController {
 
     let cellId = "cellId"
     var users = [User]()
+    var activity = UIActivityIndicatorView(style: .whiteLarge)
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(handleCancel))
         tableView.register(UserTableViewCell.self, forCellReuseIdentifier: cellId)
+        
+        self.view.addSubview(activity)
+        activity.color = #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1)
+        activity.frame = self.view.frame
+        activity.center = self.view.center
+        activity.startAnimating()
         
         fetchUser()
     }
@@ -29,8 +36,10 @@ class NewMessageController: UITableViewController {
                 let user = User()
                 user.name = dictionary["name"] as? String
                 user.email = dictionary["email"] as? String
+                user.profileImage = dictionary["profileImageURL"] as? String
                 self?.users.append(user)
                 DispatchQueue.main.async {
+                    self?.activity.stopAnimating()
                     self?.tableView.reloadData()
                 }
             }
@@ -48,30 +57,21 @@ class NewMessageController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath )
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath ) as? UserTableViewCell else {
+            return UITableViewCell()
+        }
         let user = users[indexPath.row]
         cell.textLabel?.text = user.name
         cell.detailTextLabel?.text = user.email
         
-        if let profileImageURL = user.profileImage {
-            if let url = URL(string: profileImageURL) {
-                let dataTask = URLSession.init(configuration: .default).dataTask(with: url) { (data, response, error) in
-               
-                    if error != nil {
-                        print(error!)
-                        return
-                    }
-                    DispatchQueue.main.async {
-                        cell.imageView?.image = UIImage(data: data!)
-                    }
-                }
-                dataTask.resume()
-            } else {
-                DispatchQueue.main.async {
-                    cell.imageView?.image = #imageLiteral(resourceName: "ic_user_loading")
-                }
-            }
+        guard let urlString = user.profileImage else {
+            return UITableViewCell()
         }
+        cell.profileImageView.loadImageUsingCacheWithUrlString(urlString: urlString)
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 100
     }
 }

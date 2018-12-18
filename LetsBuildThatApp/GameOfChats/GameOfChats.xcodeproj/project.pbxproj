@@ -12,6 +12,7 @@
 		518BEA7E21C60CF500E6E2C6 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 518BEA7D21C60CF500E6E2C6 /* User.swift */; };
 		518BEA8021C6764800E6E2C6 /* UserTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 518BEA7F21C6764800E6E2C6 /* UserTableViewCell.swift */; };
 		518BEA8221C69CED00E6E2C6 /* LoginController+handlers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 518BEA8121C69CED00E6E2C6 /* LoginController+handlers.swift */; };
+		518BEA8A21C8E5D500E6E2C6 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 518BEA8921C8E5D500E6E2C6 /* Extensions.swift */; };
 		51BF484521AFED1600017B03 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51BF484421AFED1600017B03 /* AppDelegate.swift */; };
 		51BF484721AFED1600017B03 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51BF484621AFED1600017B03 /* ViewController.swift */; };
 		51BF484A21AFED1600017B03 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 51BF484821AFED1600017B03 /* Main.storyboard */; };
@@ -28,6 +29,7 @@
 		518BEA7D21C60CF500E6E2C6 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		518BEA7F21C6764800E6E2C6 /* UserTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserTableViewCell.swift; sourceTree = "<group>"; };
 		518BEA8121C69CED00E6E2C6 /* LoginController+handlers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LoginController+handlers.swift"; sourceTree = "<group>"; };
+		518BEA8921C8E5D500E6E2C6 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		51BF484121AFED1600017B03 /* GameOfChats.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GameOfChats.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		51BF484421AFED1600017B03 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		51BF484621AFED1600017B03 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -77,6 +79,14 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		518BEA8821C8E5BE00E6E2C6 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				518BEA8921C8E5D500E6E2C6 /* Extensions.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
 		51BF483821AFED1600017B03 = {
 			isa = PBXGroup;
 			children = (
@@ -98,6 +108,7 @@
 		51BF484321AFED1600017B03 /* GameOfChats */ = {
 			isa = PBXGroup;
 			children = (
+				518BEA8821C8E5BE00E6E2C6 /* Helpers */,
 				518BEA7C21C60CE600E6E2C6 /* Model */,
 				51BF485621AFEED500017B03 /* Controllers */,
 				51BF484421AFED1600017B03 /* AppDelegate.swift */,
@@ -252,6 +263,7 @@
 				518BEA7B21C6092100E6E2C6 /* NewMessageController.swift in Sources */,
 				51BF484721AFED1600017B03 /* ViewController.swift in Sources */,
 				51BF485821AFEEED00017B03 /* LoginController.swift in Sources */,
+				518BEA8A21C8E5D500E6E2C6 /* Extensions.swift in Sources */,
 				518BEA7E21C60CF500E6E2C6 /* User.swift in Sources */,
 				518BEA8221C69CED00E6E2C6 /* LoginController+handlers.swift in Sources */,
 				518BEA8021C6764800E6E2C6 /* UserTableViewCell.swift in Sources */,

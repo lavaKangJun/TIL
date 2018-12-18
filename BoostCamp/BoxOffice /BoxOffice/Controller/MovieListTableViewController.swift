@@ -58,6 +58,11 @@ class MovieListTableViewController: UITableViewController {
         }
         
         self.tableviewRefreshControl.addTarget(self, action: #selector(refreshMovieData), for: .valueChanged)
+        
+        self.view.addSubview(activityIndicatorView)
+        activityIndicatorView.color = #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1)
+        activityIndicatorView.frame = self.view.frame
+        activityIndicatorView.center = self.view.center
         activityIndicatorView.startAnimating()
     }
     

@@ -1,4 +1,13 @@
 //
+//  RequestMovieInfo.swift
+//  BoxOffice
+//
+//  Created by 강준영 on 18/12/2018.
+//  Copyright © 2018 강준영. All rights reserved.
+//
+
+import Foundation
+//
 //  ResuestMovieInfo.swift
 //  BoxOffice
 //
@@ -35,4 +44,5 @@ func movieInfoRequest<T: Decodable>(urlString: String, value: String ,completion
     }
     dataTask.resume()
 }
+
 

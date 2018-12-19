@@ -31,8 +31,10 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
             
             // Successfully authenticated user
             let imageName = NSUUID().uuidString
-            let storageRef = Storage.storage().reference().child("profile_images").child("\(imageName).png")
-            if let uploadData =  self.profileImageView.image?.pngData() {
+            let storageRef = Storage.storage().reference().child("profile_images").child("\(imageName).jpg")
+            // png -> jpg (size problem)
+           // if let uploadData == self.profileImageView.image?.pngData(){
+            if let profileImage = self.profileImageView.image, let uploadData = profileImage.jpegData(compressionQuality: 0.1) {
                 storageRef.putData(uploadData, metadata: nil, completion: { (metadata, error) in
                     if error != nil {
                         print(error!)
@@ -51,13 +53,18 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
     }
     
     private func registerUserIntoDatabaseWithUID(uid: String, values: [String: String]) {
-        let ref = Database.database().reference(fromURL: "https://gameofchats-a7ecf.firebaseio.com/")
+        let ref = Database.database().reference(fromURL: "https://gameofchats2-6f2a8.firebaseio.com/")
         let userReference = ref.child("user").child(uid)
         userReference.updateChildValues(values, withCompletionBlock: { [weak self](err, ref) in
             if err != nil {
                 print("updateUserError: \(err!)")
                 return
             }
+            
+            let user = User()
+            user.name = values["name"] as? String
+            user.profileImageURL = values["profileImageURL"] as? String
+            self?.messageController?.setupNavBarWithUser(user: user)
             self?.dismiss(animated: true, completion: nil)
             print("Saved user successfully into firebase db")
             

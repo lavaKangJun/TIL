@@ -36,7 +36,7 @@ class NewMessageController: UITableViewController {
                 let user = User()
                 user.name = dictionary["name"] as? String
                 user.email = dictionary["email"] as? String
-                user.profileImage = dictionary["profileImageURL"] as? String
+                user.profileImageURL = dictionary["profileImageURL"] as? String
                 self?.users.append(user)
                 DispatchQueue.main.async {
                     self?.activity.stopAnimating()
@@ -64,7 +64,7 @@ class NewMessageController: UITableViewController {
         cell.textLabel?.text = user.name
         cell.detailTextLabel?.text = user.email
         
-        guard let urlString = user.profileImage else {
+        guard let urlString = user.profileImageURL else {
             return UITableViewCell()
         }
         cell.profileImageView.loadImageUsingCacheWithUrlString(urlString: urlString)

@@ -26,7 +26,16 @@
                 }
             ```
 
-          2. layoutSubview <- ViewContorller Lifecycle Method
+         2. CellRegister
+
+              테이블뷰에서 셀을 사용하기 위해서 Register작업을 해줘야 한다.(기본셀을 사용하는 경우는 Register 하지 않아도 된다.)
+
+              ```swift
+              //CustomCell 등록
+              tableView.register(UserTableViewCell.self, forCellReuseIdentifier: cellId)
+              ```
+
+         3. layoutSubview <- ViewContorller Lifecycle Method
 
               1. TableViewCell에서 기본으로 제공해주는 UI객체들의 배치나 크기를 조절할 수 있다.
 
@@ -74,6 +83,72 @@
       }
       ```
 
+3. ImageView
+
+   1. ImageVIew의 image를 png, jpeg data로 변경
+
+      ```
+      // PNG
+      // if let uploadData == self.profileImageView.image?.pngData(){
+      // JPEG
+      if let profileImage = self.profileImageView.image, let uploadData = profileImage.jpegData(compressionQuality: 0.1) {
+      				// jpeg 파일로 변경 후 Firebase Storage에 저장
+                      storageRef.putData(uploadData, metadata: nil, completion: { (metadata, error) in
+                          if error != nil {
+                              print(error!)
+                              return
+                          }
+                          storageRef.downloadURL(completion: { [weak self]  (url, error) in
+                              guard let url = url else {
+                                  return
+                              }
+                              let values = ["name": name, "email": email, "profileImageURL": "\(url)"]
+                              self?.registerUserIntoDatabaseWithUID(uid: uid, values: values)
+                          })
+                      })
+                  }
+      ```
+
+4. TitleView 
+
+   NavigatiomItem의 titleview를 Custom
+
+   ```swift
+   let titleView = UIView()
+           titleView.frame = CGRect(x: 0, y: 0, width: 200, height: 40)
+           
+           let profileImage = UIImageView()
+           profileImage.contentMode = .scaleAspectFill
+           profileImage.translatesAutoresizingMaskIntoConstraints = false
+           profileImage.layer.cornerRadius = 20
+           profileImage.layer.masksToBounds = true
+           if let profilImage = user.profileImageURL {
+               profileImage.loadImageUsingCacheWithUrlString(urlString: profilImage)
+           }
+   
+           titleView.addSubview(profileImage)
+   
+           NSLayoutConstraint.activate([
+               profileImage.leadingAnchor.constraint(equalTo: titleView.leadingAnchor),
+               profileImage.centerYAnchor.constraint(equalTo: titleView.centerYAnchor),
+               profileImage.widthAnchor.constraint(equalToConstant: 40),
+               profileImage.heightAnchor.constraint(equalToConstant: 40)
+               ])
+   
+           let nameLabel = UILabel()
+           titleView.addSubview(nameLabel)
+           nameLabel.translatesAutoresizingMaskIntoConstraints = false
+           nameLabel.text = user.name
+           NSLayoutConstraint.activate([
+               nameLabel.leadingAnchor.constraint(equalTo: profileImage.trailingAnchor, constant: 8),
+               nameLabel.centerYAnchor.constraint(equalTo: profileImage.centerYAnchor),
+               nameLabel.trailingAnchor.constraint(equalTo: titleView.trailingAnchor),
+               nameLabel.heightAnchor.constraint(equalTo: profileImage.heightAnchor)
+               ])
+           
+           self.navigationItem.titleView = titleView
+   }
+   ```
 
 ##### 2. Firebase
 

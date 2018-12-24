@@ -273,3 +273,17 @@
            }, withCancel: nil)
    
    ```
+
+5. message관련 데이터 베이스 생성 및 저장 
+
+   ```swift
+   @objc func handleSend() {
+         let ref = Database.database().reference().child("message")
+         let childRef = ref.childByAutoId()
+         guard let textContents = self.inputTextField.text else {
+             return
+         }
+         let values = ["text": textContents, "name": "Jhon Snow"]
+         childRef.updateChildValues(values)
+      }
+   ```

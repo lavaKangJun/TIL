@@ -17,7 +17,7 @@ class MessagesController: UITableViewController {
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
         
         let image = #imageLiteral(resourceName: "new_message")
-        navigationItem.rightBarButtonItem  = UIBarButtonItem(image: image, style: .plain , target: self, action: #selector(handleNewMessage))
+        navigationItem.rightBarButtonItems  = [UIBarButtonItem(image: image, style: .plain , target: self, action: #selector(handleNewMessage)), UIBarButtonItem(title: "GoChat", style: .plain , target: self, action: #selector(showChatController))]
         
         // tableview line not visible
         tableView.tableFooterView = UIView()
@@ -58,6 +58,7 @@ class MessagesController: UITableViewController {
     
     func setupNavBarWithUser(user: User) {
         let titleView = UIView()
+        
         titleView.frame = CGRect(x: 0, y: 0, width: 200, height: 40)
         
         let profileImage = UIImageView()
@@ -90,7 +91,15 @@ class MessagesController: UITableViewController {
             ])
         
         self.navigationItem.titleView = titleView
+        
+        
     }
+    
+    @objc func showChatController() {
+        let chatLogController = ChatLogController(collectionViewLayout: UICollectionViewFlowLayout() )
+        navigationController?.pushViewController(chatLogController, animated: true)
+    }
+    
     @objc func handleLogout() {
         
         do {

@@ -37,6 +37,7 @@ class NewMessageController: UITableViewController {
                 user.name = dictionary["name"] as? String
                 user.email = dictionary["email"] as? String
                 user.profileImageURL = dictionary["profileImageURL"] as? String
+                user.id = snapshot.key
                 self?.users.append(user)
                 DispatchQueue.main.async {
                     self?.activity.stopAnimating()
@@ -73,5 +74,14 @@ class NewMessageController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 100
+    }
+    
+    var messageController: MessagesController?
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        dismiss(animated: true) {
+            let user = self.users[indexPath.row]
+            self.messageController?.showChatControllerForUser(user: user)
+        }
     }
 }

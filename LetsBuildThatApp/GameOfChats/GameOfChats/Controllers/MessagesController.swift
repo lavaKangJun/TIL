@@ -17,17 +17,55 @@ class MessagesController: UITableViewController {
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
         
         let image = #imageLiteral(resourceName: "new_message")
-        navigationItem.rightBarButtonItems  = [UIBarButtonItem(image: image, style: .plain , target: self, action: #selector(handleNewMessage)), UIBarButtonItem(title: "GoChat", style: .plain , target: self, action: #selector(showChatController))]
+        navigationItem.rightBarButtonItems  = [UIBarButtonItem(image: image, style: .plain , target: self, action: #selector(handleNewMessage))/*, UIBarButtonItem(title: "GoChat", style: .plain , target: self, action: #selector(showChatController))*/]
         
         // tableview line not visible
         tableView.tableFooterView = UIView()
         
         checkIfUserLogin()
+        
+        observeMessages()
+    }
+    
+    var messages = [Message]()
+    
+    func observeMessages() {
+        let ref = Database.database().reference().child("message")
+        ref.observeSingleEvent(of: .childAdded, with: { [weak self] (snapshot) in
+            if let dictionary = snapshot.value as? [String: AnyObject] {
+                let message = Message()
+                message.fromId = dictionary["fromId"] as? String
+                message.toId = dictionary["toId"] as? String
+                message.text = dictionary["text"] as? String
+                message.timeStamp = dictionary["timeStamp"] as? Double
+                self?.messages.append(message)
+                print("message: \(message.text)")
+                // main Thread
+                DispatchQueue.main.async {
+                     self?.tableView.reloadData()
+                }
+            }
+        }, withCancel: nil)
+    }
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return messages.count
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        print("cell setting")
+        let cell  = UITableViewCell(style: .subtitle, reuseIdentifier: "cellId")
+       // let cell = tableView.dequeueReusableCell(withIdentifier: "cellId", for: indexPath)
+        let message = messages[indexPath.row]
+        print("message: \(message)")
+        cell.textLabel?.text = message.toId
+        cell.detailTextLabel?.text = message.text
+        return cell
     }
     
     @objc func handleNewMessage() {
         let newMessageController = NewMessageController()
-        
+        newMessageController.messageController = self
         // nitializes and returns a newly created navigation controller.
         let navController = UINavigationController(rootViewController: newMessageController)
         present(navController, animated: true, completion: nil)
@@ -95,8 +133,9 @@ class MessagesController: UITableViewController {
         
     }
     
-    @objc func showChatController() {
+    @objc func showChatControllerForUser(user: User) {
         let chatLogController = ChatLogController(collectionViewLayout: UICollectionViewFlowLayout() )
+        chatLogController.user = user
         navigationController?.pushViewController(chatLogController, animated: true)
     }
     

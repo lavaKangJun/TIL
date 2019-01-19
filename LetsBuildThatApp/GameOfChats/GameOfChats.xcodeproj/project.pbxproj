@@ -75,6 +75,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		51785B8C21F1BEC500EA18E5 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				518BEA7F21C6764800E6E2C6 /* UserTableViewCell.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		518BEA7C21C60CE600E6E2C6 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -113,6 +121,7 @@
 		51BF484321AFED1600017B03 /* GameOfChats */ = {
 			isa = PBXGroup;
 			children = (
+				51785B8C21F1BEC500EA18E5 /* View */,
 				518BEA8821C8E5BE00E6E2C6 /* Helpers */,
 				518BEA7C21C60CE600E6E2C6 /* Model */,
 				51BF485621AFEED500017B03 /* Controllers */,
@@ -133,7 +142,6 @@
 				518BEA8121C69CED00E6E2C6 /* LoginController+handlers.swift */,
 				51BF484621AFED1600017B03 /* MessagesController.swift */,
 				518BEA7A21C6092100E6E2C6 /* NewMessageController.swift */,
-				518BEA7F21C6764800E6E2C6 /* UserTableViewCell.swift */,
 				518BEA8F21D0D3C300E6E2C6 /* ChatLogController.swift */,
 			);
 			path = Controllers;

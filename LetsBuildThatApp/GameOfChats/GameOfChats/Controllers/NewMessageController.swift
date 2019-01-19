@@ -32,6 +32,7 @@ class NewMessageController: UITableViewController {
     
     func fetchUser() {
         Database.database().reference().child("user").observe(.childAdded, with: { [weak self] (snapshot) in
+            print(snapshot)
             if let dictionary = snapshot.value as? [String: AnyObject] {
                 let user = User()
                 user.name = dictionary["name"] as? String

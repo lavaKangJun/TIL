@@ -7,8 +7,36 @@
 //
 
 import UIKit
+import Firebase
 
 class UserTableViewCell: UITableViewCell {
+    var message: Message? {
+        didSet {
+            if let toId = message?.toId {
+                Database.database().reference().child("user").child(toId).observe(.value, with: { [weak self] (snapShot) in
+                    if let dictionary = snapShot.value as? [String: AnyObject] {
+                        DispatchQueue.main.async {
+                            self?.textLabel?.text = dictionary["name"] as? String
+                        }
+                        if let profileImageUrl = dictionary["profileImageURL"] as? String {
+                            DispatchQueue.main.async {
+                            self?.profileImageView.loadImageUsingCacheWithUrlString(urlString: profileImageUrl)
+                            }
+                        }
+                    }
+                }, withCancel: nil)
+            }
+            detailTextLabel?.text = message?.text
+            
+            guard let messageTimeStamp = message?.timeStamp else {
+                return
+            }
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "hh:mm:ss a"
+            let timeStamp = NSDate(timeIntervalSince1970: messageTimeStamp / 1000)
+            timeLabel.text = dateFormatter.string(from: timeStamp as Date)
+        }
+    }
     
     var profileImageView: UIImageView = {
         var imageView = UIImageView()
@@ -20,6 +48,14 @@ class UserTableViewCell: UITableViewCell {
         return imageView
     }()
     
+    var timeLabel: UILabel = {
+        var label = UILabel()
+        label.text = "HH:MM:SS"
+        label.font = UIFont.systemFont(ofSize: 12)
+        label.textColor = #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
     override func layoutSubviews() {
         super.layoutSubviews()
         textLabel?.frame = CGRect(x: 64, y: textLabel!.frame.origin.y - 2, width: textLabel!.frame.width, height: textLabel!.frame.height)
@@ -30,12 +66,20 @@ class UserTableViewCell: UITableViewCell {
         super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
         
         addSubview(profileImageView)
+        addSubview(timeLabel)
         
         NSLayoutConstraint.activate([
             profileImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 8),
             profileImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             profileImageView.widthAnchor.constraint(equalToConstant: 48),
             profileImageView.heightAnchor.constraint(equalToConstant: 48)
+            ])
+        
+        NSLayoutConstraint.activate([
+            timeLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            timeLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 18),
+            timeLabel.widthAnchor.constraint(equalToConstant: 100),
+            timeLabel.heightAnchor.constraint(equalTo: textLabel!.heightAnchor)
             ])
     }
     

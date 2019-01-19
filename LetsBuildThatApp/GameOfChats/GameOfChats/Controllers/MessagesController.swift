@@ -12,6 +12,8 @@ import FirebaseDatabase
 
 class MessagesController: UITableViewController {
 
+    let cellId = "cellId"
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
@@ -24,22 +26,32 @@ class MessagesController: UITableViewController {
         
         checkIfUserLogin()
         
+        tableView.register(UserTableViewCell.self, forCellReuseIdentifier: cellId)
+        
         observeMessages()
     }
     
     var messages = [Message]()
+    var messageDictionary = [String: Message]()
     
     func observeMessages() {
         let ref = Database.database().reference().child("message")
-        ref.observeSingleEvent(of: .childAdded, with: { [weak self] (snapshot) in
+        
+        ref.observe(.childAdded, with: { [weak self] (snapshot) in
             if let dictionary = snapshot.value as? [String: AnyObject] {
                 let message = Message()
                 message.fromId = dictionary["fromId"] as? String
                 message.toId = dictionary["toId"] as? String
                 message.text = dictionary["text"] as? String
                 message.timeStamp = dictionary["timeStamp"] as? Double
-                self?.messages.append(message)
-                print("message: \(message.text)")
+                
+                if let toId = message.toId {
+                    self?.messageDictionary[toId] = message
+                    self?.messages = Array((self?.messageDictionary.values)!)
+                    self?.messages.sorted(by: { (message1, message2) -> Bool in
+                        return Int(message1.timeStamp!) < Int(message2.timeStamp!)
+                    })
+                }
                 // main Thread
                 DispatchQueue.main.async {
                      self?.tableView.reloadData()
@@ -53,14 +65,16 @@ class MessagesController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        print("cell setting")
-        let cell  = UITableViewCell(style: .subtitle, reuseIdentifier: "cellId")
-       // let cell = tableView.dequeueReusableCell(withIdentifier: "cellId", for: indexPath)
+        //let cell  = UITableViewCell(style: .subtitle, reuseIdentifier: "cellId")
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! UserTableViewCell
+        
         let message = messages[indexPath.row]
-        print("message: \(message)")
-        cell.textLabel?.text = message.toId
-        cell.detailTextLabel?.text = message.text
+        cell.message = message
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 72
     }
     
     @objc func handleNewMessage() {

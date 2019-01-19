@@ -278,12 +278,57 @@
 
    ```swift
    @objc func handleSend() {
-         let ref = Database.database().reference().child("message")
-         let childRef = ref.childByAutoId()
-         guard let textContents = self.inputTextField.text else {
-             return
-         }
-         let values = ["text": textContents, "name": "Jhon Snow"]
-         childRef.updateChildValues(values)
+           let ref = Database.database().reference().child("message")
+           let childRef = ref.childByAutoId()
+           guard let textContents = self.inputTextField.text else {
+               return
+           }
+           let toId = user!.id
+           let fromId = Auth.auth().currentUser!.uid
+           let timeStamp = Date().toMillis()
+           let values = ["text": textContents, "toId": toId!, "fromId": fromId, "timeStamp": timeStamp] as [String : Any]
+           childRef.updateChildValues(values)
       }
    ```
+
+
+
+6. message 데이터 가져오기
+
+   ````swift
+   var messages = [Message]()
+   // 딕셔너리를 사용하여 채팅방 보여줌()
+   var messageDictionary = [String: Message]()
+   
+   func observeMessages() {
+           let ref = Database.database().reference().child("message")
+           
+           ref.observe(.childAdded, with: { [weak self] (snapshot) in
+               if let dictionary = snapshot.value as? [String: AnyObject] {
+                   let message = Message()
+                   message.fromId = dictionary["fromId"] as? String
+                   message.toId = dictionary["toId"] as? String
+                   message.text = dictionary["text"] as? String
+                   message.timeStamp = dictionary["timeStamp"] as? Double
+                   
+                   if let toId = message.toId {
+                       // 같은 아이디가 있으면 최신데이터로 계속 하나의 데이터가 갱신
+                       self?.messageDictionary[toId] = message
+                       self?.messages = Array((self?.messageDictionary.values)!)
+                       // 메시지 최신순으로 보여주기 위해 정렬
+                       self?.messages.sorted(by: { (message1, message2) -> Bool in
+                           return Int(message1.timeStamp!) < Int(message2.timeStamp!)
+                       })
+                   }
+                   // main Thread
+                   DispatchQueue.main.async {
+                        self?.tableView.reloadData()
+                   }
+               }
+           }, withCancel: nil)
+       }
+   ````
+
+
+
+    

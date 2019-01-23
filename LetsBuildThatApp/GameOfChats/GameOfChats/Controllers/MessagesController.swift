@@ -28,11 +28,43 @@ class MessagesController: UITableViewController {
         
         tableView.register(UserTableViewCell.self, forCellReuseIdentifier: cellId)
         
-        observeMessages()
     }
     
     var messages = [Message]()
     var messageDictionary = [String: Message]()
+    
+    func observeUserMessage() {
+        guard let uid = Auth.auth().currentUser?.uid else {
+            return
+        }
+        let ref = Database.database().reference().child("user-messages").child(uid)
+        ref.observe(.childAdded) { (snapshot) in
+            let messageId = snapshot.key
+            let messageReference = Database.database().reference().child("message").child(messageId)
+            
+            messageReference.observeSingleEvent(of: .value, with: { [weak self] (snapshot) in
+                if let dictionary = snapshot.value as? [String: AnyObject] {
+                    let message = Message()
+                    message.fromId = dictionary["fromId"] as? String
+                    message.toId = dictionary["toId"] as? String
+                    message.text = dictionary["text"] as? String
+                    message.timeStamp = dictionary["timeStamp"] as? Double
+                    print("message: \(message)")
+                    if let toId = message.toId {
+                        self?.messageDictionary[toId] = message
+                        self?.messages = Array((self?.messageDictionary.values)!)
+                        self?.messages.sorted(by: { (message1, message2) -> Bool in
+                            return Int(message1.timeStamp!) < Int(message2.timeStamp!)
+                        })
+                    }
+                    // main Thread
+                    DispatchQueue.main.async {
+                        self?.tableView.reloadData()
+                    }
+                }
+            })
+        }
+    }
     
     func observeMessages() {
         let ref = Database.database().reference().child("message")
@@ -77,6 +109,30 @@ class MessagesController: UITableViewController {
         return 72
     }
     
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let message = messages[indexPath.row]
+       
+        guard let chatPartnerId = message.chatPartnerId() else {
+            return
+        }
+        
+        let ref = Database.database().reference().child("user").child(chatPartnerId)
+        ref.observeSingleEvent(of: .value, with: { (snapshot) in
+            guard let dictionary = snapshot.value as? [String: AnyObject] else {
+                return
+            }
+            
+            let user = User()
+            user.id = chatPartnerId
+            user.name = dictionary["name"] as? String
+            user.email = dictionary["email"] as? String
+            user.profileImageURL = dictionary["profileImageURL"] as? String
+            self.showChatControllerForUser(user: user)
+            print(snapshot)
+        }, withCancel: nil)
+        
+    }
+    
     @objc func handleNewMessage() {
         let newMessageController = NewMessageController()
         newMessageController.messageController = self
@@ -109,8 +165,13 @@ class MessagesController: UITableViewController {
     }
     
     func setupNavBarWithUser(user: User) {
-        let titleView = UIView()
+        messages.removeAll()
+        messageDictionary.removeAll()
+        tableView.reloadData()
         
+        observeUserMessage()
+        
+        let titleView = UIView()
         titleView.frame = CGRect(x: 0, y: 0, width: 200, height: 40)
         
         let profileImage = UIImageView()

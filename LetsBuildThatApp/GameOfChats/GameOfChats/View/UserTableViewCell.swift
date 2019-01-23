@@ -12,20 +12,8 @@ import Firebase
 class UserTableViewCell: UITableViewCell {
     var message: Message? {
         didSet {
-            if let toId = message?.toId {
-                Database.database().reference().child("user").child(toId).observe(.value, with: { [weak self] (snapShot) in
-                    if let dictionary = snapShot.value as? [String: AnyObject] {
-                        DispatchQueue.main.async {
-                            self?.textLabel?.text = dictionary["name"] as? String
-                        }
-                        if let profileImageUrl = dictionary["profileImageURL"] as? String {
-                            DispatchQueue.main.async {
-                            self?.profileImageView.loadImageUsingCacheWithUrlString(urlString: profileImageUrl)
-                            }
-                        }
-                    }
-                }, withCancel: nil)
-            }
+            setNameAndProfile()
+            
             detailTextLabel?.text = message?.text
             
             guard let messageTimeStamp = message?.timeStamp else {
@@ -50,7 +38,6 @@ class UserTableViewCell: UITableViewCell {
     
     var timeLabel: UILabel = {
         var label = UILabel()
-        label.text = "HH:MM:SS"
         label.font = UIFont.systemFont(ofSize: 12)
         label.textColor = #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1)
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -101,6 +88,23 @@ class UserTableViewCell: UITableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         self.profileImageView.image = nil
+    }
+    
+    private func setNameAndProfile() {
+        if let id = message?.chatPartnerId() {
+            Database.database().reference().child("user").child(id).observe(.value, with: { [weak self] (snapShot) in
+                if let dictionary = snapShot.value as? [String: AnyObject] {
+                    DispatchQueue.main.async {
+                        self?.textLabel?.text = dictionary["name"] as? String
+                    }
+                    if let profileImageUrl = dictionary["profileImageURL"] as? String {
+                        DispatchQueue.main.async {
+                            self?.profileImageView.loadImageUsingCacheWithUrlString(urlString: profileImageUrl)
+                        }
+                    }
+                }
+                }, withCancel: nil)
+        }
     }
 
 }

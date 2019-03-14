@@ -99,8 +99,8 @@
   - Pause: Interrupt, timer, I/O
 
   - Exit: 프로세스에 'exit systemcall' 하면 process 종료된다. 
+  <img width="871" alt="스크린샷 2019-03-14 오후 10 03 18" src="https://user-images.githubusercontent.com/37703727/54361805-2b38b780-46ab-11e9-9f92-055cde2772ed.png">
 
-    ![스크린샷 2019-03-14 오후 10.03.18](/Users/kangjun-young/Desktop/스크린샷 2019-03-14 오후 10.03.18.png)
 
 - fork()
 
@@ -127,9 +127,9 @@
   - BlockedQueue: BlockState 상태의 프로세스 저장
 
 
-  ​	![스크린샷 2019-03-14 오후 10.11.36](/Users/kangjun-young/Desktop/스크린샷 2019-03-14 오후 10.11.36.png)
+  	<img width="731" alt="스크린샷 2019-03-14 오후 10 11 36" src="https://user-images.githubusercontent.com/37703727/54361887-515e5780-46ab-11e9-90ca-b4b9326aed2a.png">
+    <img width="522" alt="스크린샷 2019-03-14 오후 10 11 24" src="https://user-images.githubusercontent.com/37703727/54361936-6b983580-46ab-11e9-9615-9e3482aa37ff.png">
 
-  ![스크린샷 2019-03-14 오후 10.11.24](/Users/kangjun-young/Desktop/스크린샷 2019-03-14 오후 10.11.24.png)
 
 - Swapping
 
@@ -151,7 +151,7 @@
 
   - Suspend (= Swapping)
 
-    ![스크린샷 2019-03-14 오후 10.20.25](/Users/kangjun-young/Desktop/스크린샷 2019-03-14 오후 10.20.25.png)
+    <img width="667" alt="스크린샷 2019-03-14 오후 10 20 25" src="https://user-images.githubusercontent.com/37703727/54361978-7a7ee800-46ab-11e9-84bd-1ec56c7ffacf.png">
 
 - Unix - State - Process - Model
 
@@ -167,7 +167,7 @@
 
     - kernelmode에서 kernel만을 위한 명령어가 존재함.
 
-    ![스크린샷 2019-03-14 오후 10.22.45](/Users/kangjun-young/Desktop/스크린샷 2019-03-14 오후 10.22.45.png)
+    <img width="678" alt="스크린샷 2019-03-14 오후 10 22 45" src="https://user-images.githubusercontent.com/37703727/54362003-87034080-46ab-11e9-9b6f-f58324089864.png">
 
 
 

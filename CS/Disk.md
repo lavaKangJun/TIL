@@ -1,0 +1,56 @@
+##  운영체제
+
+### 7. Disk
+
+- Disk Management
+  - Logical bock
+    - 디스크 외부에서는 보는 디스크의 단위 정보 저장 공간
+  - Physical formatting
+    - 디스크를 컨트롤러가 읽고 쓸 수 있도록 섹터들로 나누는 과정
+    - 섹터
+      - Header + 실제 data(512 bytes) + trailer
+        - header, trailer 
+          - 부가적인 정보 저장
+  - Partitioning
+    - 디스크를 하나이상의 실린더 그룹으로 나누는 과정
+    - OS는 이것을 독립적 Disk로 취급
+  - Logical formatting
+    - 파일 시스템을 만드는 것
+- Disk Scheduling
+  - Access time  = seek time + rotational latency + transfer time
+    - seek time
+      - 헤드를 실린더로 이동하는 시간
+    - rotational latency 
+      - 헤드가 원하는 섹터에 도달하기 까지 걸리는 시간
+    - transfer time
+      - 실제 데이터 전송시간
+  - Disk scheduling
+    - Seek time(가장 오래 걸림) 최소화
+- Disk Scheduling Alorithm
+  - FCFS
+  - SSTF (Shortest Seek Time First)
+    - 현재 헤더와 가장 가까운 요청 먼저
+    - Starvation 문제
+  - SCAN
+    - 한쪽 끝에서 다른 끝 쪽으로 이동하면서 요청처리
+    - 다시 역방향으로 요청처리
+  - C - SCAN
+    - 한쪽 끝에서 다른 끝쪽으로 이동하면서 요청처리
+    - 다시 출발점으로 이동해서 요청처리
+  - N - SCAN
+    - SCAN과 동일한 방식이지만 이동하는 중에 큐에 요청이 들어오면 처리함
+  - Look
+    - SCAN 방식을 쓰지만 지금 방향으로 요청이 없으면 역방향 요청 시작
+  - C - Look
+    - C - SCAN  방식을 쓰지만 지금 방향으로 더 요청이 없으면 출발점으로 이동
+  - SCAN, C - SCAN 기반 방식이 많으 쓰임
+ - Swap Space
+    - 공간 효율성 보다 시간 효율성이 우선
+       - 데이터들이 금방 없어짐으로
+- RAID
+  - 디스크를 여러개 묶어서 사용하는 것
+  - 디스크 처리 속도 향상
+    - 여러 디스크에  block 내용을 분산저장
+    - 병렬적으로 읽어옴
+  - 신뢰성 향상
+    - Mirroring or shadowing : 하나의 디스크가 고장나면 다른 디스크에서 읽어올 수 있다.

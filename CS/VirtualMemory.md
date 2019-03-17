@@ -139,11 +139,12 @@
         - 커널이 사용하는 페이지들은 쫓아내선 안되기 때문에 Locking이 걸림
 
   - Replacement Algorithm
-    - 아래의 순서대로 성능이 좋음
     - Optimal
       - 미래에 사용되지 않을 페이지를 쫓아냄
     - LRU
       - 오랫동안 사용되지 않은 페이지를 쫓아냄
+    - LFU
+      - 덜 빈번하게 사용된 페이지를 쫓아냄 (reference count가 가장 적은 페이지를 쫓아냄)
     - Clock
       - use bit 를 사용
         - Reference 되면 user bit 1로 set -> 한 사이클 뒤에 use bit를 0으로 set -> 다시 한 사이클 뒤에

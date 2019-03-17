@@ -4,7 +4,7 @@
 
 **scheduling: 시스템 리소스를 스레드, 프로세스에 할당 시키는 것**
 
-### 5. Scheduling(단일 프로세서 스케줄링)
+### 5. Scheduling(프로세서(CPU) 스케줄링)
 
 - Long Term Scheduling
 

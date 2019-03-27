@@ -58,8 +58,8 @@
     - 모든 Index의 계수가능 범위를 배열로 리턴
   -  stribe(from:through:by:)
     - 셀수있는 범위를 생성(부동소수점 범위를 계수가능하게 해준다) 
-    'for in stribe(from: 0.5, through: 15.25, by: 0.3)'
-
+    `for in stribe(from: 0.5, through: 15.25, by: 0.3)`
+    
 #### 5. Static
 
 - Static func

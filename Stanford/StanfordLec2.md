@@ -14,7 +14,8 @@
 
 **UI와 Model이 독립적인 디자인 패턴**
 
-![스크린샷 2019-03-27 오후 2.49.37](/Users/kangjun-young/Desktop/스크린샷 2019-03-27 오후 2.49.37.png)
+<img width="1529" alt="스크린샷 2019-03-27 오후 2 49 37" src="https://user-images.githubusercontent.com/37703727/55067326-da6d8980-50c2-11e9-962e-a51bf27b5c85.png">
+
 
 - Model: What, UI와 독립적
   - Model -> Controller: Notification
@@ -55,6 +56,9 @@
   - Indices
     - 배열의 메소드
     - 모든 Index의 계수가능 범위를 배열로 리턴
+  -  stribe(from:through:by:)
+    - 셀수있는 범위를 생성(부동소수점 범위를 계수가능하게 해준다) 
+    'for in stribe(from: 0.5, through: 15.25, by: 0.3)'
 
 #### 5. Static
 

@@ -38,9 +38,9 @@
 #### 3. Class
 
 - NSObject
-  - Object - c의 모든 클래스들의 root class
+  - Object-C의 모든 클래스들의 root class
 - NSNumber
-  - Object-c에서 숫자를 전달할 때 사용
+  - Object-C에서 숫자를 전달할 때 사용
   - 소수, 정수,,, 모든 숫자 표현이 가능하고,  boolean도 표현가능
 
 - Date

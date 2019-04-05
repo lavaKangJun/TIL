@@ -8,7 +8,7 @@
 
 #### 1. App Lifecycle
 
-![스크린샷 2019-04-05 오후 3.56.19](/Users/kangjun-young/Desktop/스크린샷 2019-04-05 오후 3.56.19.png)
+<img width="405" alt="스크린샷 2019-04-05 오후 3 56 19" src="https://user-images.githubusercontent.com/37703727/55611611-f9ee6b80-57c0-11e9-8b80-103a9eaa6764.png">
 
 - Inactive
   - 코드는 실행되지만 UIEvent 받지못함 (준비작업 실행)

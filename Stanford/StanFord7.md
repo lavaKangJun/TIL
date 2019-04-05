@@ -70,7 +70,3 @@
    3. Timer는 백그라운드에서 돌아가지 않지만 백그라운드로 완전히 바뀌기전 30초정도 사용가능
 
 6. Animating : UIView Properties 
-
-**궁금점**
-
-delegate 설정하는 걸 왜 viewDidLoad에서 안하고 awakeFromNib()에서 할까?

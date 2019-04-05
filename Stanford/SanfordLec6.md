@@ -94,7 +94,13 @@
 2. 뷰는 여러개의 제스처 인식을 가질 수 있다.
 3. 제스처 인식단계 (1) 제스처를 인식한다.[아울렛 설정자의 didSet에 소스를 추가해서 제스처인식]
    (2)제스처 처리[핸들러]-> 핸들러를 쓸 때 state(ex) .end. chaned...)별로 적어줘야한다.
-4. 드래그앤드 그롭: longPressGesture
+4. Gesture: 
+   - Swipe
+   - Pinch(=Scale)
+   - Pan(=Move)
+   - Tap
+   - Rotation
+   - LongPress
 
 
 

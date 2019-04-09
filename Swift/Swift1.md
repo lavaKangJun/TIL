@@ -214,7 +214,14 @@
          // ("jay", 20)
          // ("hun", 19)
          ```
-
+	- in 뒤의 범위는 Sequence면 다 가능
+	- sequence: 어딘가에서 시작해서, 다음으로 넘어갈 수 있는것(계수가능범위)
+		- ex) array, string...
+	- Indices: 배열의 메서드
+		- 모든 Index계수 가능 범위를 배열로 리턴
+	- stribe(from:through:by:)
+		- 셀수있는 범위를 생성(부동소수점 범위를 계수가능하게 해준다) `for in stribe(from: 0.5, through: 15.25, by: 0.3)`
+		
       2. while 
 
          1. while

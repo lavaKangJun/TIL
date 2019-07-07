@@ -20,9 +20,6 @@
   - Subject가 종료된경우 미래의 subscribers들에게 stop event를 re-emit한다.
     - <img width="849" alt="스크린샷 2019-07-07 오후 7 53 51" src="https://user-images.githubusercontent.com/37703727/60767844-706c7380-a0f8-11e9-8125-447f28ae2737.png">
 
-  
-
-
 
 - Behavior Subject
 
@@ -34,8 +31,6 @@
   - error(complete)가 발생하고 난뒤에 subscribe하면 error event(stop event)를 re-emit한다.
 
     - <img width="904" alt="스크린샷 2019-07-07 오후 8 03 28" src="https://user-images.githubusercontent.com/37703727/60767853-8b3ee800-a0f8-11e9-9105-bfba70d316f8.png">
-
-    
 
 - Replay Subject
   - subscribe되면 이전에 emit되었던 event들을 버퍼에 저장된만큼 re-emit(재 방출) 한다.

@@ -1,6 +1,6 @@
 
 
-###RxCocoa
+RxCocoa
 
 - 모든 플랫폼에서 사용가능하다.
   - iOS, tvOS, macOS
